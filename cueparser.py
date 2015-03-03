@@ -12,6 +12,7 @@ class CueSheet():
 
     def __init__(self):
         self.performer = None
+        self.songwriter = None
         self.title = None
         self.file = None
         self.aformat = None
@@ -42,6 +43,12 @@ class CueSheet():
             match = re.match('^PERFORMER .(.*).$', line)
             if match:
                 self.performer = match.group(1)
+                line = self.next()
+
+        if not self.songwriter:
+            match = re.match('^SONGWRITER .(.*).$', line)
+            if match:
+                self.songwriter = match.group(1)
                 line = self.next()
 
         if not self.title:
@@ -83,6 +90,11 @@ class CueSheet():
             track.performer = match.group(1)
             self.track(track)
 
+        match = re.match('^SONGWRITER .(.*).$', line)
+        if match:
+            track.songwriter = match.group(1)
+            self.track(track)
+
         match = re.match('^TITLE .(.*).$', line)
         if match:
             track.title = match.group(1)
@@ -118,6 +130,8 @@ class CueSheet():
         ret = self.outputFormat
         if self.performer:
             ret = ret.replace("%performer%", self.performer)
+        if self.songwriter:
+            ret = ret.replace("%songwriter%", self.songwriter)
         if self.title:
             ret = ret.replace("%title%", self.title)
         if self.file:
@@ -136,6 +150,7 @@ class CueSheet():
 class CueTrack():
     def __init__(self):
         self.performer = None
+        self.songwriter = None
         self.title = None
         self.index = None
         self.offset = None
@@ -153,6 +168,8 @@ class CueTrack():
         ret = self.outputFormat
         if self.performer:
             ret = ret.replace("%performer%", self.performer)
+        if self.songwriter:
+            ret = ret.replace("%songwriter%", self.songwriter)
         if self.title:
             ret = ret.replace("%title%", self.title)
         if self.index:
