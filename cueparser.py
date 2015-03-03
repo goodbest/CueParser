@@ -11,6 +11,7 @@ from datetime import timedelta
 class CueSheet():
 
     def __init__(self):
+        self.rem = None
         self.performer = None
         self.songwriter = None
         self.title = None
@@ -39,6 +40,16 @@ class CueSheet():
         if not line:
             return
 
+        if not self.rem:
+            match = re.match('^REM .(.*).$', line)
+            rem_tmp = ''
+            while match:
+                rem_tmp += match.group(0) +'\n'
+                line = self.next()
+                match = re.match('^REM .(.*).$', line)
+            if rem_tmp:
+                self.rem = rem_tmp.strip()
+        
         if not self.performer:
             match = re.match('^PERFORMER .(.*).$', line)
             if match:
@@ -128,6 +139,8 @@ class CueSheet():
 
     def __repr__(self):
         ret = self.outputFormat
+        if self.rem:
+            ret = ret.replace("%rem%", self.rem)
         if self.performer:
             ret = ret.replace("%performer%", self.performer)
         if self.songwriter:
