@@ -111,6 +111,16 @@ class CueSheet():
             track.title = match.group(1)
             self.track(track)
 
+        match = re.match('^FLAGS .(.*).$', line)
+        if match:
+            track.flags = match.group(1)
+            self.track(track)
+
+        match = re.match('^ISRC .(.*).$', line)
+        if match:
+            track.ISRC = match.group(1)
+            self.track(track)
+
         match = re.match('^INDEX (.*) (.*)$', line)
         if match:
             track.index = match.group(1)
@@ -165,6 +175,8 @@ class CueTrack():
         self.performer = None
         self.songwriter = None
         self.title = None
+        self.flags = None
+        self.isrc = None
         self.index = None
         self.offset = None
         self.outputFormat = None
@@ -190,7 +202,7 @@ class CueTrack():
         if self.offset:
             ret = ret.replace("%offset%", self.offset)
         if self.number:
-            ret = ret.replace("%number%", "%s" % self.number)
+            ret = ret.replace("%number%", "%02d" % self.number)
         if self.duration:
             minutes = math.floor(self.duration.seconds / 60)
             ret = ret.replace("%duration%", "%02d:%02d" % (minutes, self.duration.seconds - 60 * minutes));

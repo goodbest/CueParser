@@ -25,8 +25,8 @@ Example
 `cueparser.py file.cue`
 
 will output content with such template:
-* for header: %performer% - %title%\n%file%\n%tracks% (also can be %format%)
-* for tracks: %performer% - %title% (also can be %offset%, %index%)
+* for header: %performer% - %title%\n%file%\n%tracks% (also can be %format%, %rem%, %songwriter%)
+* for tracks: %performer% - %title% (also can be %offset%, %index%, %songwriter%)
 
 Library example
 ===============
